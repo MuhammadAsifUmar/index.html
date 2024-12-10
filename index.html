@@ -7,37 +7,23 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            height: 100vh;
         }
         #chatbox {
-            flex: 1;
-            overflow-y: auto;
+            height: 300px;
+            overflow-y: scroll;
             border: 1px solid #ccc;
+            margin-bottom: 10px;
             padding: 10px;
         }
         #footer {
             display: flex;
-            padding: 10px;
-            border-top: 1px solid #ccc;
         }
         #message {
             flex: 1;
             padding: 10px;
-            font-size: 16px;
         }
         #send {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        #send:hover {
-            background-color: #0056b3;
+            padding: 10px;
         }
     </style>
 </head>
@@ -45,13 +31,12 @@
     <h1>Welcome to the Chat</h1>
     <div id="chatbox"></div>
     <div id="footer">
-        <input type="text" id="message" placeholder="Type your message...">
+        <input type="text" id="message" placeholder="Type your message">
         <button id="send">Send</button>
     </div>
 
     <script>
-        const ws = new WebSocket('ws://localhost:8080'); // Update with your deployed WebSocket server
-
+        const ws = new WebSocket('ws://localhost:8080');
         const chatbox = document.getElementById('chatbox');
         const messageInput = document.getElementById('message');
         const sendButton = document.getElementById('send');
@@ -66,11 +51,10 @@
         sendButton.addEventListener('click', function() {
             const message = messageInput.value;
             if (message) {
-                ws.send(JSON.stringify({ type: 'group', room: 'general', message }));
+                ws.send(JSON.stringify({ type: 'group', message }));
                 messageInput.value = '';
             }
         });
     </script>
 </body>
 </html>
-
