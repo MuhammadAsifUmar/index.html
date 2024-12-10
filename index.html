@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+    <style>
+        /* Basic styling for chat UI */
+    </style>
+</head>
+<body>
+    <h1>Chat Room</h1>
+    <div id="chatbox"></div>
+    <input type="text" id="message" placeholder="Type a message">
+    <button id="send">Send</button>
+    <script>
+        const ws = new WebSocket('ws://localhost:8080');
+        ws.onmessage = (event) => {
+            const data = JSON.parse(event.data);
+            const chatbox = document.getElementById('chatbox');
+            const message = document.createElement('div');
+            message.textContent = data.message;
+            chatbox.appendChild(message);
+        };
+
+        document.getElementById('send').addEventListener('click', () => {
+            const message = document.getElementById('message').value;
+            ws.send(JSON.stringify({ type: 'group', room: 'general', message }));
+            document.getElementById('message').value = '';
+        });
+    </script>
+</body>
+</html>
